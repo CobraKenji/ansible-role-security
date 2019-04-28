@@ -23,8 +23,6 @@
       line: "PubkeyAuthentication {{ security_ssh_pubkey }}"
     - regexp: "^#Port"
       line: "Port {{ security_ssh_port }}"
-    - regexp: "^UseDNS"
-      line: "UseDNS {{ security_ssh_usedns }}"
     - regexp: "^#PermitEmptyPasswords"
       line: "PermitEmptyPasswords {{ security_ssh_permit_empty_password }}"
     - regexp: "^ChallengeResponseAuthentication"
