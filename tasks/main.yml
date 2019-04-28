@@ -18,7 +18,7 @@
     - regexp: "^PasswordAuthentication"
       line: "PasswordAuthentication {{ security_ssh_password_authentication }}"
     - regexp: "^#PermitRootLogin"
-      line: "#PermitRootLogin {{ security_ssh_permit_root_login }}"
+      line: "PermitRootLogin {{ security_ssh_permit_root_login }}"
     - regexp: "^#PubkeyAuthentication"
       line: "PubkeyAuthentication {{ security_ssh_pubkey }}"
     - regexp: "^#Port"
