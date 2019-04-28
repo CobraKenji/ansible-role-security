@@ -1,5 +1,6 @@
 ---
 security_ssh_port: 22345
+security_ssh_config_path: /etc/ssh/sshd_config
 security_ssh_password_authentication: "yes"
 security_ssh_permit_root_login: "no"
 security_ssh_usedns: "no"
