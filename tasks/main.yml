@@ -1,14 +1,8 @@
 ---
-- name: Include OS-specific variables.
-  include_vars: "{{ ansible_os_family }}.yml"
-
 # Fail2Ban
-- include_tasks: fail2ban-RedHat.yml
-  when: ansible_os_family == 'RedHat' and security_fail2ban_enabled
-
-- include_tasks: fail2ban-Debian.yml
-  when: ansible_os_family == 'Debian' and security_fail2ban_enabled
-
+- name: Install fail2ban.
+  package: name=fail2ban state=present enablerepo=epel
+  
 - name: Ensure fail2ban is running and enabled on boot.
   service: name=fail2ban state=started enabled=yes
   when: security_fail2ban_enabled
@@ -60,8 +54,15 @@
   when: security_sudoers_passworded | length > 0
 
 # Autoupdate
-- include_tasks: autoupdate-RedHat.yml
-  when: ansible_os_family == 'RedHat' and security_autoupdate_enabled
+- name: Install yum-cron.
+  package: name=yum-cron state=present
 
-- include_tasks: autoupdate-Debian.yml
-  when: ansible_os_family == 'Debian' and security_autoupdate_enabled
+- name: Ensure yum-cron is running and enabled on boot.
+  service: name=yum-cron state=started enabled=yes
+
+- name: Configure autoupdates (RHEL 7).
+  lineinfile:
+    dest: "/etc/yum/yum-cron.conf"
+    regexp: '^apply_updates = .+'
+    line: 'apply_updates = yes'
+  when: security_autoupdate_enabled and ansible_distribution_major_version | int == 7
